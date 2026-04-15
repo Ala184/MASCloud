@@ -1,0 +1,62 @@
+﻿@using Common.Models.Query
+@{
+    ViewData["Title"] = "Odgovor";
+    var response = ViewBag.Response as QueryResponse;
+    string question = ViewBag.Question as string ?? "";
+}
+
+<h2>Odgovor</h2>
+
+<div class="card mb-3">
+    <div class="card-header">Vaše pitanje</div>
+    <div class="card-body">
+        <p>@question</p>
+    </div>
+</div>
+
+@if (response != null)
+{
+    <!-- Warnings -->
+    @if (response.Warnings.Count > 0)
+    {
+        <div class="alert alert-warning">
+            @foreach (var warning in response.Warnings)
+            {
+                <p class="mb-0">⚠ @warning</p>
+            }
+        </div>
+    }
+
+    <!-- Explanations -->
+    <div class="card mb-3">
+        <div class="card-header">Tumačenje</div>
+        <div class="card-body">
+            <p style="white-space: pre-wrap;">@response.Explanation</p>
+        </div>
+    </div>
+
+    <!-- Quotes -->
+    @if (response.Citations.Count > 0)
+    {
+        <h4>Reference</h4>
+        @foreach (var citation in response.Citations)
+        {
+            <div class="card mb-2 border-start border-primary border-3">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        [@citation.SectionIdentifier]
+                        @if (!string.IsNullOrEmpty(citation.DocumentTitle))
+                        {
+                            <span>— @citation.DocumentTitle (v@(citation.VersionNumber))</span>
+                        }
+                    </h6>
+                    <p class="card-text">@citation.Content</p>
+                </div>
+            </div>
+        }
+    }
+
+    <p class="text-muted mt-3">Vrijeme obrade: @(response.ProcessingTimeMs) ms</p>
+}
+
+<a asp-action="Ask" class="btn btn-primary mt-2">Novo pitanje</a>

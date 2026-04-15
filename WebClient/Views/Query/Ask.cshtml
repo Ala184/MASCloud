@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Postavi pitanje";
+}
+
+<h2>Postavi pitanje</h2>
+<p class="text-muted">
+    Sistem će pronaći relevantne dijelove dokumenata i generisati tumačenje.
+</p>
+
+<form method="post" asp-action="Ask">
+    <div class="mb-3">
+        <label class="form-label">Vaše pitanje</label>
+        <textarea name="questionText"
+                  class="form-control"
+                  rows="4"
+                  required
+                  placeholder="npr. Ko ima pravo na godišnji odmor prema Zakonu o radu?"></textarea>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Datum konteksta (opcionalno)</label>
+            <input type="date" name="contextDate" class="form-control" />
+            <div class="form-text">
+                Sistem će koristiti verziju dokumenta koja važi na ovaj datum.
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Dodatni kontekst (opcionalno)</label>
+            <input type="text"
+                   name="contextInfo"
+                   class="form-control"
+                   placeholder="npr. tip_organizacije=javna_ustanova" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success btn-lg">Postavi pitanje</button>
+</form>

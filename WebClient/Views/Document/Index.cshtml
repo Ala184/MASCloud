@@ -1,0 +1,55 @@
+﻿@using Common.Models.Document
+@{
+    ViewData["Title"] = "Dokumenti";
+    var documents = ViewBag.Documents as List<Document> ?? new List<Document>();
+}
+
+<h2>Dokumenti</h2>
+<a asp-action="Upload" class="btn btn-primary mb-3">+ Dodaj novi dokument</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Naziv</th>
+            <th>Tip</th>
+            <th>Kreiran</th>
+            <th>Autor</th>
+            <th>Važi do</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var doc in documents)
+        {
+            <tr>
+                <td>@doc.Id</td>
+                <td>@doc.Title</td>
+                <td><span class="badge bg-info">@doc.DocumentType</span></td>
+                <td>@doc.CreatedAt.ToString("dd.MM.yyyy")</td>
+                <td>@doc.CreatedBy</td>
+                <td>
+                    @if (doc.ValidUntil.HasValue)
+                    {
+                        if (doc.ValidUntil.Value < DateTime.Now)
+                        {
+                            <span class="badge bg-danger">Istekao @doc.ValidUntil.Value.ToString("dd.MM.yyyy")</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning text-dark">@doc.ValidUntil.Value.ToString("dd.MM.yyyy")</span>
+                        }
+                    }
+                    else
+                    {
+                        <span class="text-muted">Neograničeno</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@doc.Id" class="btn btn-sm btn-outline-primary">Detalji</a>
+                    <a asp-action="AddVersion" asp-route-id="@doc.Id" class="btn btn-sm btn-outline-warning">Nova verzija</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

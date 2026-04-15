@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["Title"] = "Dodaj dokument";
+}
+
+<h2>Dodaj novi dokument</h2>
+
+<form method="post" asp-action="Upload">
+    <div class="mb-3">
+        <label class="form-label">Naziv dokumenta</label>
+        <input type="text"
+               name="title"
+               class="form-control"
+               required
+               placeholder="npr. Zakon o radu" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Tip dokumenta</label>
+        <select name="documentType" class="form-select" required>
+            <option value="Zakon">Zakon</option>
+            <option value="Pravilnik">Pravilnik</option>
+            <option value="InternaPolitika">Interna politika</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Autor</label>
+        <input type="text" name="createdBy" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Datum početka važenja</label>
+        <input type="date" name="validFrom" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Važi do (opciono)</label>
+        <input type="date" name="validUntil" class="form-control" />
+        <div class="form-text">Ostavite prazno ako dokument nema rok trajanja.</div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Tekst dokumenta</label>
+        <textarea name="fullText"
+                  class="form-control"
+                  rows="15"
+                  required
+                  placeholder="Član 1.&#10;(1) Tekst prvog stava...&#10;(2) Tekst drugog stava...&#10;&#10;Član 2.&#10;(1) ..."></textarea>
+        <div class="form-text">
+            Sistem će automatski prepoznati strukturu: Član, Stav (1), Tačka a).
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Sačuvaj dokument</button>
+    <a asp-action="Index" class="btn btn-secondary">Odustani</a>
+</form>

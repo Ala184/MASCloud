@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Istorija upita";
+    var logs = ViewBag.Logs as List<Common.Models.Query.QueryLog> ?? new();
+    int currentPage = ViewBag.CurrentPage;
+    int totalPages = ViewBag.TotalPages;
+}
+
+<h2>Istorija upita</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Datum</th>
+            <th>Pitanje</th>
+            <th>Vrijeme (ms)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var log in logs)
+        {
+            <tr>
+                <td>@log.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
+                <td>@(log.QuestionText.Length > 100 ? log.QuestionText[..100] + "..." : log.QuestionText)</td>
+                <td>@log.ProcessingTimeMs</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Paginacija -->
+<nav>
+    <ul class="pagination">
+        @for (int i = 1; i <= totalPages; i++)
+        {
+            <li class="page-item @(i == currentPage ? "active" : "")">
+                <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
+            </li>
+        }
+    </ul>
+</nav>

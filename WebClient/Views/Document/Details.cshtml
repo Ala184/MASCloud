@@ -1,0 +1,97 @@
+﻿@using Common.Models.Document
+@{
+    ViewData["Title"] = "Detalji dokumenta";
+    var versions = ViewBag.Versions as List<DocumentVersion> ?? new List<DocumentVersion>();
+    var sections = ViewBag.Sections as List<DocumentSection> ?? new List<DocumentSection>();
+    var currentVersion = ViewBag.CurrentVersion as DocumentVersion;
+    int docId = ViewBag.DocumentId;
+}
+
+<h2>Dokument #@docId</h2>
+<a asp-action="AddVersion" asp-route-id="@docId" class="btn btn-warning mb-3">+ Nova verzija</a>
+
+<!-- Verzije -->
+<h4>Verzije</h4>
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th>Verzija</th>
+            <th>Važi od</th>
+            <th>Važi do</th>
+            <th>Opis izmjene</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var v in versions)
+        {
+            bool isSelected = currentVersion != null && currentVersion.Id == v.Id;
+            <tr class="@(isSelected ? "table-primary" : v.ValidTo == null ? "table-success" : "")">
+                <td>v@(v.VersionNumber)</td>
+                <td>@v.ValidFrom.ToString("dd.MM.yyyy")</td>
+                <td>@(v.ValidTo?.ToString("dd.MM.yyyy") ?? "Aktuelna")</td>
+                <td>@v.ChangeDescription</td>
+                <td>
+                    @if (!isSelected)
+                    {
+                        <a asp-action="Details" asp-route-id="@docId" asp-route-versionId="@v.Id"
+                           class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-eye"></i> Prikaži
+                        </a>
+                    }
+                    else
+                    {
+                        <span class="badge bg-primary">Prikazana</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Struktura odabrane verzije -->
+@if (currentVersion != null)
+{
+    <h4>
+        Struktura (v@(currentVersion.VersionNumber))
+        @if (currentVersion.ValidTo != null)
+        {
+            <span class="badge bg-secondary ms-2">Arhivirana</span>
+        }
+        else
+        {
+            <span class="badge bg-success ms-2">Aktuelna</span>
+        }
+    </h4>
+
+    @if (currentVersion.ValidTo != null)
+    {
+        <div class="alert alert-warning">
+            <i class="bi bi-info-circle"></i>
+            Gledate arhiviranu verziju v@(currentVersion.VersionNumber) koja je važila
+            od @currentVersion.ValidFrom.ToString("dd.MM.yyyy")
+            do @currentVersion.ValidTo?.ToString("dd.MM.yyyy").
+            <a asp-action="Details" asp-route-id="@docId" class="alert-link">Vrati se na aktuelnu verziju</a>
+        </div>
+    }
+
+    <div class="list-group">
+        @foreach (var s in sections)
+        {
+            string indent = s.SectionType switch
+            {
+                SectionType.Poglavlje => "",
+                SectionType.Clan => "ms-2",
+                SectionType.Stav => "ms-4",
+                SectionType.Tacka => "ms-5",
+                _ => ""
+            };
+
+            <div class="list-group-item @indent">
+                <strong>[@s.SectionIdentifier]</strong>
+                <span class="badge bg-secondary">@s.SectionType</span>
+                <p class="mb-0 mt-1">@s.Content</p>
+            </div>
+        }
+    </div>
+}

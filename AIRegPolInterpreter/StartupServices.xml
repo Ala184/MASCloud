@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<StartupServicesManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/2011/01/fabric">
+  <Parameters>
+    <Parameter Name="WebClient_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="QueryService_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="DocumentService_MinReplicaSetSize" DefaultValue="2" />
+    <Parameter Name="DocumentService_TargetReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="LLMService_MinReplicaSetSize" DefaultValue="2" />
+    <Parameter Name="LLMService_TargetReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="AuditService_MinReplicaSetSize" DefaultValue="2" />
+    <Parameter Name="AuditService_TargetReplicaSetSize" DefaultValue="3" />
+  </Parameters>
+  <Services>
+    <Service Name="WebClient" ServicePackageActivationMode="ExclusiveProcess">
+      <StatelessService ServiceTypeName="WebClientType" InstanceCount="[WebClient_InstanceCount]">
+        <SingletonPartition />
+      </StatelessService>
+    </Service>
+    <Service Name="QueryService" ServicePackageActivationMode="ExclusiveProcess">
+      <StatelessService ServiceTypeName="QueryServiceType" InstanceCount="[QueryService_InstanceCount]">
+        <SingletonPartition />
+      </StatelessService>
+    </Service>
+    <Service Name="DocumentService" ServicePackageActivationMode="ExclusiveProcess">
+      <StatefulService ServiceTypeName="DocumentServiceType" TargetReplicaSetSize="[DocumentService_TargetReplicaSetSize]" MinReplicaSetSize="[DocumentService_MinReplicaSetSize]">
+        <SingletonPartition />
+      </StatefulService>
+    </Service>
+    <Service Name="LLMService" ServicePackageActivationMode="ExclusiveProcess">
+      <StatefulService ServiceTypeName="LLMServiceType" TargetReplicaSetSize="[LLMService_TargetReplicaSetSize]" MinReplicaSetSize="[LLMService_MinReplicaSetSize]">
+        <SingletonPartition />
+      </StatefulService>
+    </Service>
+    <Service Name="AuditService" ServicePackageActivationMode="ExclusiveProcess">
+      <StatefulService ServiceTypeName="AuditServiceType" TargetReplicaSetSize="[AuditService_TargetReplicaSetSize]" MinReplicaSetSize="[AuditService_MinReplicaSetSize]">
+        <SingletonPartition />
+      </StatefulService>
+    </Service>
+  </Services>
+</StartupServicesManifest>

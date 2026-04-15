@@ -1,0 +1,534 @@
+﻿<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AI Policy Interpreter</title>
+    <!-- Bootstrap 5.3 CSS (CDN, no integrity to avoid hash mismatch) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" crossorigin="anonymous" />
+    <style>
+        /* ── EcoStruxure™ Palette ── */
+        :root {
+            --eco-green: #3DCD58;
+            --eco-green-dark: #009530;
+            --eco-green-darker: #007A2B;
+            --eco-green-light: #E8F9EB;
+            --eco-charcoal: #2C2C2C;
+            --eco-dark: #333;
+            --eco-gray: #6C6C6C;
+            --eco-silver: #E0E0E0;
+            --eco-off-white: #F5F5F5;
+            --eco-blue: #0087CD;
+            --eco-warning: #F5A623;
+            --eco-danger: #E53935;
+            --eco-shadow: 0 2px 8px rgba(0,0,0,.10);
+            --eco-radius: 8px;
+        }
+
+        body {
+            font-family: 'Segoe UI',system-ui,sans-serif;
+            background: var(--eco-off-white);
+            color: var(--eco-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .eco-top-bar {
+            height: 4px;
+            background: linear-gradient(90deg,var(--eco-green-dark),var(--eco-green),var(--eco-green-dark));
+        }
+        /* Navbar */
+        .eco-navbar {
+            background: var(--eco-charcoal);
+            box-shadow: var(--eco-shadow);
+            padding: .6rem 0;
+        }
+
+            .eco-navbar .navbar-brand {
+                color: #fff;
+                font-size: 1.1rem;
+            }
+
+                .eco-navbar .navbar-brand:hover {
+                    color: var(--eco-green);
+                }
+
+            .eco-navbar .brand-icon {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 38px;
+                height: 38px;
+                background: var(--eco-green);
+                color: #fff;
+                border-radius: 4px;
+                font-size: 1.2rem;
+            }
+
+            .eco-navbar .brand-sub {
+                font-size: .65rem;
+                color: var(--eco-green);
+                text-transform: uppercase;
+                letter-spacing: .08em;
+                font-weight: 500;
+                line-height: 1;
+            }
+
+            .eco-navbar .nav-link {
+                color: rgba(255,255,255,.8);
+                font-size: .9rem;
+                font-weight: 500;
+                padding: .5rem 1rem !important;
+                border-radius: 4px;
+                transition: all .2s;
+                margin: 0 2px;
+            }
+
+                .eco-navbar .nav-link:hover {
+                    color: #fff;
+                    background: rgba(61,205,88,.15);
+                }
+
+                .eco-navbar .nav-link.active {
+                    color: var(--eco-green);
+                    background: rgba(61,205,88,.1);
+                }
+
+            .eco-navbar .navbar-toggler {
+                border-color: rgba(255,255,255,.2);
+            }
+
+            .eco-navbar .navbar-toggler-icon {
+                background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255,255,255,.8)' stroke-linecap='round' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+            }
+        /* Main & Footer */
+        .eco-main {
+            flex: 1;
+        }
+
+        .eco-footer {
+            background: var(--eco-charcoal);
+            color: rgba(255,255,255,.6);
+            padding: 1.2rem 0;
+            margin-top: auto;
+            font-size: .85rem;
+        }
+
+            .eco-footer .footer-brand {
+                color: var(--eco-green);
+                font-weight: 600;
+            }
+        /* Headings */
+        h2 {
+            font-size: 1.65rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            padding-bottom: .6rem;
+            border-bottom: 3px solid var(--eco-green);
+            display: inline-block;
+            color: var(--eco-charcoal);
+        }
+
+        h4 {
+            font-weight: 600;
+            color: var(--eco-charcoal);
+        }
+        /* Cards */
+        .card {
+            border: none;
+            border-radius: var(--eco-radius);
+            box-shadow: 0 1px 3px rgba(0,0,0,.08);
+            transition: all .2s;
+            overflow: hidden;
+        }
+
+            .card:hover {
+                box-shadow: var(--eco-shadow);
+                transform: translateY(-2px);
+            }
+
+        .card-header {
+            background: var(--eco-charcoal);
+            color: #fff;
+            font-weight: 600;
+            font-size: .9rem;
+            padding: .75rem 1.25rem;
+            border-bottom: 3px solid var(--eco-green);
+        }
+        /* Tables */
+        .table {
+            background: #fff;
+            border-radius: var(--eco-radius);
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,.08);
+        }
+
+            .table thead {
+                background: var(--eco-charcoal);
+            }
+
+                .table thead th {
+                    color: #fff;
+                    font-weight: 600;
+                    font-size: .85rem;
+                    text-transform: uppercase;
+                    letter-spacing: .04em;
+                    padding: .85rem 1rem;
+                    border: none;
+                }
+
+            .table tbody td {
+                padding: .75rem 1rem;
+                vertical-align: middle;
+                border-bottom: 1px solid var(--eco-silver);
+                font-size: .9rem;
+            }
+
+            .table tbody tr:hover {
+                background: var(--eco-green-light);
+            }
+        /* Buttons */
+        .btn {
+            font-weight: 500;
+            font-size: .9rem;
+            border-radius: 4px;
+            transition: all .2s;
+        }
+
+        .btn-primary {
+            background: var(--eco-green-dark);
+            border-color: var(--eco-green-dark);
+        }
+
+            .btn-primary:hover {
+                background: var(--eco-green-darker);
+                border-color: var(--eco-green-darker);
+                box-shadow: 0 2px 8px rgba(0,149,48,.3);
+            }
+
+        .btn-success {
+            background: var(--eco-green);
+            border-color: var(--eco-green);
+        }
+
+            .btn-success:hover {
+                background: var(--eco-green-dark);
+                border-color: var(--eco-green-dark);
+            }
+
+        .btn-outline-primary {
+            color: var(--eco-green-dark);
+            border-color: var(--eco-green-dark);
+        }
+
+            .btn-outline-primary:hover {
+                background: var(--eco-green-dark);
+                color: #fff;
+            }
+        /* Forms */
+        .form-control:focus, .form-select:focus {
+            border-color: var(--eco-green);
+            box-shadow: 0 0 0 3px rgba(61,205,88,.15);
+        }
+
+        .form-label {
+            font-weight: 600;
+            font-size: .85rem;
+            text-transform: uppercase;
+            letter-spacing: .03em;
+            color: var(--eco-charcoal);
+        }
+        /* Badges */
+        .badge.bg-info {
+            background: var(--eco-blue) !important;
+        }
+
+        .badge.bg-success {
+            background: var(--eco-green-dark) !important;
+        }
+        /* Progress */
+        .progress-bar.bg-success {
+            background: var(--eco-green-dark) !important;
+        }
+
+        .progress-bar.bg-warning {
+            background: var(--eco-warning) !important;
+        }
+
+        .progress-bar.bg-danger {
+            background: var(--eco-danger) !important;
+        }
+        /* Alerts */
+        .alert-warning {
+            background: #FFF8E1;
+            color: #8D6E00;
+            border: none;
+            border-left: 4px solid var(--eco-warning);
+            border-radius: var(--eco-radius);
+        }
+        /* Citations */
+        .eco-citation {
+            border: none !important;
+            border-left: 4px solid var(--eco-green-dark) !important;
+            border-radius: var(--eco-radius);
+            box-shadow: 0 1px 3px rgba(0,0,0,.08);
+        }
+        /* List group */
+        .list-group {
+            border-radius: var(--eco-radius);
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,.08);
+        }
+
+        .list-group-item {
+            border: none;
+            border-bottom: 1px solid var(--eco-silver);
+        }
+
+            .list-group-item:hover {
+                background: var(--eco-green-light);
+            }
+        /* Pagination */
+        .page-item.active .page-link {
+            background: var(--eco-green-dark);
+            border-color: var(--eco-green-dark);
+        }
+
+        .page-link {
+            color: var(--eco-green-dark);
+        }
+
+            .page-link:hover {
+                background: var(--eco-green-light);
+                color: var(--eco-green-dark);
+            }
+        /* HR */
+        hr {
+            border: none;
+            height: 2px;
+            background: linear-gradient(90deg,transparent,var(--eco-green),transparent);
+            opacity: .6;
+        }
+        /* Feature cards (home) */
+        .eco-feature-card {
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .eco-feature-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 4px;
+                background: var(--eco-green);
+                transform: scaleX(0);
+                transition: transform .3s;
+            }
+
+            .eco-feature-card:hover::before {
+                transform: scaleX(1);
+            }
+
+            .eco-feature-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 4px 16px rgba(0,0,0,.12);
+            }
+
+            .eco-feature-card .card-body {
+                padding: 2rem 1.5rem;
+                text-align: center;
+            }
+
+        .feature-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            margin-bottom: 1.2rem;
+            font-size: 1.6rem;
+        }
+
+            .feature-icon.icon-documents {
+                background: var(--eco-green-light);
+                color: var(--eco-green-dark);
+            }
+
+            .feature-icon.icon-query {
+                background: #E3F2FD;
+                color: var(--eco-blue);
+            }
+
+            .feature-icon.icon-history {
+                background: #F3E5F5;
+                color: #7B1FA2;
+            }
+        /* Info banner */
+        .eco-info-banner {
+            background: linear-gradient(135deg,var(--eco-charcoal),#3a3a3a);
+            color: #fff;
+            padding: 1rem 1.5rem;
+            border-radius: var(--eco-radius);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+        }
+
+            .eco-info-banner i {
+                font-size: 1.2rem;
+                color: var(--eco-green);
+            }
+
+            .eco-info-banner p {
+                margin: 0;
+                font-size: .9rem;
+            }
+        /* Spinner */
+        .eco-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--eco-silver);
+            border-top-color: var(--eco-green);
+            border-radius: 50%;
+            animation: ecoSpin .6s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @@keyframes ecoSpin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        /* Fade in */
+        .eco-fade-in {
+            animation: ecoFadeIn .4s ease-out;
+        }
+
+        @@keyframes ecoFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* Responsive */
+        @@media(max-width:768px) {
+            h2 {
+                font-size: 1.35rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="eco-top-bar"></div>
+
+    <nav class="navbar navbar-expand-lg eco-navbar sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <span class="brand-icon me-2"><i class="bi bi-cpu"></i></span>
+                <span>
+                    <strong>AI Policy Interpreter</strong>
+                </span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="Index">
+                            <i class="bi bi-house-door me-1"></i>Početna
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Document" asp-action="Index">
+                            <i class="bi bi-file-earmark-text me-1"></i>Dokumenti
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Document" asp-action="Upload">
+                            <i class="bi bi-plus-circle me-1"></i>Dodaj dokument
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Query" asp-action="Ask">
+                            <i class="bi bi-chat-dots me-1"></i>Postavi pitanje
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="History" asp-action="Index">
+                            <i class="bi bi-clock-history me-1"></i>Istorija
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="eco-main">
+        <div class="container py-4 eco-fade-in">
+            @RenderBody()
+        </div>
+    </main>
+
+    <footer class="eco-footer">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <span class="footer-brand"><i class="bi bi-cpu me-1"></i> AI Policy Interpreter</span>
+                    <span class="mx-2" style="color:rgba(255,255,255,.2)">|</span>
+                    <span class="text-muted">EcoStruxure&trade; Platform</span>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <small class="text-muted">&copy; @DateTime.Now.Year Distributed AI Regulation Interpreter</small>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5.3 JS (CDN, no integrity) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Highlight active nav link
+            var path = location.pathname.toLowerCase();
+            document.querySelectorAll('.eco-navbar .nav-link').forEach(function (link) {
+                var href = (link.getAttribute('href') || '').toLowerCase();
+                if ((path === '/' && href === '/') || (href !== '/' && path.startsWith(href)))
+                    link.classList.add('active');
+            });
+            // Submit button loading state
+            document.querySelectorAll('form').forEach(function (f) {
+                f.addEventListener('submit', function () {
+                    var btn = f.querySelector('button[type="submit"]');
+                    if (btn && !btn.disabled) {
+                        var orig = btn.innerHTML;
+                        btn.disabled = true;
+                        btn.innerHTML = '<span class="eco-spinner"></span> Obrada...';
+                        setTimeout(function () { btn.disabled = false; btn.innerHTML = orig; }, 60000);
+                    }
+                });
+            });
+            // Wrap standalone forms
+            document.querySelectorAll('form[method="post"]').forEach(function (f) {
+                if (!f.closest('.card')) { f.style.background='#fff'; f.style.borderRadius='8px'; f.style.boxShadow='0 2px 8px rgba(0,0,0,.1)'; f.style.padding='2rem'; f.style.maxWidth='750px'; }
+            });
+        });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

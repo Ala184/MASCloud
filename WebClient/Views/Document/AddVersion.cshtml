@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Nova verzija"; int docId = ViewBag.DocumentId;
+}
+
+<h2>Nova verzija za dokument #@docId</h2>
+
+<form method="post" asp-action="AddVersion">
+    <input type="hidden" name="documentId" value="@docId" />
+
+    <div class="mb-3">
+        <label class="form-label">Datum početka važenja</label>
+        <input type="date" name="validFrom" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Opis izmjene</label>
+        <input type="text"
+               name="changeDescription"
+               class="form-control"
+               placeholder="npr. Izmjena člana 5, dodat novi stav" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Tekst nove verzije</label>
+        <textarea name="fullText"
+                  class="form-control"
+                  rows="15"
+                  required></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-warning">Sačuvaj novu verziju</button>
+    <a asp-action="Details" asp-route-id="@docId" class="btn btn-secondary">Odustani</a>
+</form>

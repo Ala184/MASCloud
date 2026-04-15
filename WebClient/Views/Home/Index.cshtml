@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Početna";
+}
+
+<div class="text-center mt-5">
+    <h1>AI Regulation & Policy Interpreter</h1>
+    <p class="lead mt-3">
+        Distribuirani sistem za tumačenje zakona, pravilnika i internih politika
+        organizacije pomoću velikih jezičkih modela (LLM).
+    </p>
+    <hr />
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Dokumenti</h5>
+                    <p class="card-text">
+                        Upravljajte pravnim dokumentima, verzijama i strukturom.
+                    </p>
+                    <a asp-controller="Document"
+                       asp-action="Index"
+                       class="btn btn-primary">Pregledaj</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Postavi pitanje</h5>
+                    <p class="card-text">
+                        Postavite pitanje u prirodnom jeziku o propisima.
+                    </p>
+                    <a asp-controller="Query" asp-action="Ask" class="btn btn-success">Pitaj</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Istorija</h5>
+                    <p class="card-text">
+                        Pregledajte istoriju svih postavljenih pitanja.
+                    </p>
+                    <a asp-controller="History"
+                       asp-action="Index"
+                       class="btn btn-secondary">Pogledaj</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
