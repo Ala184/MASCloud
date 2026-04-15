@@ -1,0 +1,85 @@
+# .gitignore for AIRegPolInterpreter (Visual Studio / .NET / Service Fabric)
+
+############################
+# Visual Studio user-specific
+############################
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+############################
+# Build results
+############################
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+*.log
+*.tlog
+*.cache
+*.pdb
+*.ilk
+*.aps
+*.ncb
+*.opendb
+*.VC.db
+*.VC.VC.opendb
+
+# MSBuild / dotnet
+artifacts/
+*.trx
+TestResults/
+
+############################
+# NuGet
+############################
+# Legacy packages folder (repo currently has /packages)
+packages/
+# Generated during restore
+*.nupkg
+*.snupkg
+# NuGet v3 cache (user machine)
+.nuget/
+
+############################
+# Publishing / deployment outputs
+############################
+# Web publish output
+**/[Pp]ublish/
+**/[Pp]ublished/
+**/[Pp]ublishOutput/
+
+############################
+# Service Fabric (packaging output)
+############################
+# Typical output folder names when packaging Service Fabric apps
+**/pkg/
+**/ApplicationPackageRoot/pkg/
+
+############################
+# IIS / Azure / local tooling
+############################
+# (keep publish profiles in source control unless they contain secrets)
+# **/Properties/PublishProfiles/*.pubxml
+
+############################
+# Local databases & backups
+############################
+
+############################
+# IDEs
+############################
+.idea/
+*.iml
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+############################
+# OS files
+############################
+.DS_Store
+Thumbs.db
+Desktop.ini
